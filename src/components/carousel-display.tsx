@@ -28,7 +28,7 @@ export function CarouselDemo() {
             >
               <div
                 className="flex h-full items-center justify-center
-border-[1px] border-black"
+bg-blue-100"
               >
                 <span className="text-4xl font-semibold">
                   {index + 1}
