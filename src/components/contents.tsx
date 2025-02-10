@@ -6,17 +6,12 @@ import {
   CarouselItem
 } from "@/components/ui/carousel";
 import { type CarouselApi } from "@/components/ui/carousel";
+import { useAiModelsStore } from "@/store/zustand";
 
 import { useEffect, useState } from "react";
 
-const aiList = ["ChatGPT", "Gemini", "Claude"].map((item, index) => {
-  return {
-    id: index,
-    name: item
-  };
-});
-
 export function Contents() {
+  const { aiModels, setAiModel } = useAiModelsStore();
   const [api, setApi] = useState<CarouselApi>();
 
   useEffect(() => {
@@ -25,8 +20,9 @@ export function Contents() {
     }
 
     api.on("select", () => {
-      console.log(api.selectedScrollSnap());
+      setAiModel(api.selectedScrollSnap());
     });
+    // eslint-disable-next-line
   }, [api]);
 
   return (
@@ -38,7 +34,7 @@ export function Contents() {
       setApi={setApi}
     >
       <CarouselContent className="h-full">
-        {aiList.map(({ id, name }, index) => {
+        {aiModels.map(({ id, name }, index) => {
           return (
             <CarouselItem
               key={id}
