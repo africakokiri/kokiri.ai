@@ -4,6 +4,7 @@ interface AiModelsStore {
   aiModels: {
     id: number;
     name: string;
+    isSelected?: boolean;
   }[];
   setAiModel: (selectedIndex: number) => void;
 }

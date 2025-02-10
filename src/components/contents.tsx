@@ -22,12 +22,21 @@ export function Contents() {
     api.on("select", () => {
       setAiModel(api.selectedScrollSnap());
     });
+
+    const selectedAiModel = aiModels.find(
+      ({ isSelected }) => isSelected === true
+    );
+
+    if (selectedAiModel) {
+      api.scrollTo(selectedAiModel?.id);
+    }
+
     // eslint-disable-next-line
-  }, [api]);
+  }, [api, aiModels]);
 
   return (
     <Carousel
-      className="h-full w-full *:h-full"
+      className="h-full w-full bg-green-100 *:h-full"
       opts={{
         loop: true
       }}
@@ -40,10 +49,7 @@ export function Contents() {
               key={id}
               className="h-full"
             >
-              <div
-                className="flex h-full items-center justify-center
-bg-blue-100"
-              >
+              <div className="flex h-full items-center justify-center">
                 <span className="text-4xl font-semibold">
                   {index + 1}
                   {name}
