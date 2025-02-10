@@ -1,8 +1,9 @@
+import { CarouselDemo } from "@/components/carousel-display";
+
 export default function page() {
   return (
-    <div
-      className="flex h-full w-full items-center justify-center
-backdrop-blur-2xl"
-    ></div>
+    <div className="flex h-full w-full justify-center p-4">
+      <CarouselDemo />
+    </div>
   );
 }
