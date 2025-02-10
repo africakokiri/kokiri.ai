@@ -1,4 +1,4 @@
-import { LottieGradient } from "@/components/ui/lottie-gradient";
+// import { LottieGradient } from "@/components/ui/lottie-gradient";
 import NextThemesProvider from "@/libs/next-themes/next-themes-provider";
 import "@/styles/globals.css";
 
@@ -21,7 +21,7 @@ export default function RootLayout({
     <html lang="ko">
       <body className="h-dvh w-dvw antialiased">
         <NextThemesProvider>
-          <LottieGradient />
+          {/* <LottieGradient /> */}
           {children}
         </NextThemesProvider>
       </body>
