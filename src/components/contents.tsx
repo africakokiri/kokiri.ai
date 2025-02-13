@@ -13,6 +13,21 @@ import { useEffect, useState } from "react";
 export function Contents() {
   const { aiModels, setAiModel } = useAiModelsStore();
   const [api, setApi] = useState<CarouselApi>();
+  const [response, setResponse] = useState("");
+
+  const fetchChat = async () => {
+    setResponse(""); // 초기화
+    const res = await fetch("/api/chat");
+    const reader = res.body?.getReader();
+    if (!reader) return;
+
+    const decoder = new TextDecoder();
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      setResponse((prev) => prev + decoder.decode(value));
+    }
+  };
 
   useEffect(() => {
     if (!api) {
@@ -34,6 +49,10 @@ export function Contents() {
     // eslint-disable-next-line
   }, [api, aiModels]);
 
+  useEffect(() => {
+    fetchChat();
+  }, []);
+
   return (
     <Carousel
       className="h-full w-full bg-green-100 *:h-full"
@@ -50,10 +69,7 @@ export function Contents() {
               className="h-full"
             >
               <div className="flex h-full items-center justify-center">
-                <span className="text-4xl font-semibold">
-                  {index + 1}
-                  {name}
-                </span>
+                <span className="text-4xl font-semibold">{response}</span>
               </div>
             </CarouselItem>
           );
