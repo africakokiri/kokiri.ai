@@ -11,7 +11,7 @@ export const AiModelsList = () => {
 
   return (
     <header className="fixed">
-      <ul className="flex flex-col items-center gap-4 p-2">
+      <ul className="flex flex-col items-center gap-2 bg-green-100 p-2">
         {aiModels.map(({ id, name, imageSrc }) => {
           return (
             <li key={id}>
