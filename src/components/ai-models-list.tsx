@@ -1,11 +1,13 @@
 "use client";
 
+import { cn } from "@/libs/shadcn/utils";
 import { useAiModelsStore } from "@/store/state";
 
 import Image from "next/image";
 
 export const AiModelsList = () => {
-  const { aiModels } = useAiModelsStore();
+  const { aiModels, selectedAiModel, setSelectedAiModel } =
+    useAiModelsStore();
 
   return (
     <header className="fixed">
@@ -14,7 +16,12 @@ export const AiModelsList = () => {
           return (
             <li key={id}>
               <button
-                className="flex flex-col items-center justify-center gap-1"
+                className={cn(
+                  `flex max-h-[58px] min-h-[58px] min-w-[58px] max-w-[58px]
+flex-col items-center justify-center gap-1 rounded-lg`,
+                  selectedAiModel.name === name && "bg-black/20"
+                )}
+                onClick={() => setSelectedAiModel(aiModels[id])}
               >
                 <Image
                   src={imageSrc}
