@@ -12,6 +12,11 @@ interface AiModels {
   setSelectedAiModel: (aiModel: AiModel) => void;
 }
 
+interface UserInput {
+  userInput: string;
+  setUserInput: (input: string) => void;
+}
+
 const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => {
   return {
     id: index,
@@ -24,4 +29,9 @@ export const useAiModelsStore = create<AiModels>((set) => ({
   aiModels,
   selectedAiModel: aiModels[0],
   setSelectedAiModel: (aiModel) => set({ selectedAiModel: aiModel })
+}));
+
+export const useUserInputStore = create<UserInput>((set) => ({
+  userInput: "",
+  setUserInput: (input) => set({ userInput: input })
 }));
