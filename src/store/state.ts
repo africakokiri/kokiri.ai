@@ -1,11 +1,15 @@
 import { create } from "zustand";
 
+interface AiModel {
+  id: number;
+  name: string;
+  imageSrc: string;
+}
+
 interface AiModels {
-  aiModels: {
-    id: number;
-    name: string;
-    imageSrc: string;
-  }[];
+  aiModels: AiModel[];
+  selectedAiModel: AiModel;
+  setSelectedAiModel: (aiModel: AiModel) => void;
 }
 
 const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => {
@@ -17,5 +21,7 @@ const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => {
 });
 
 export const useAiModelsStore = create<AiModels>((set) => ({
-  aiModels
+  aiModels,
+  selectedAiModel: aiModels[0],
+  setSelectedAiModel: (aiModel) => set({ selectedAiModel: aiModel })
 }));
