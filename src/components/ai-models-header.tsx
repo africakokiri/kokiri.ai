@@ -9,7 +9,7 @@ export const AiModelsHeader = () => {
   const { aiModels, selectAiModel } = useAiModelsStore();
 
   return (
-    <ul className="flex gap-2 p-2">
+    <ul className="fixed left-0 top-0 flex gap-2 p-2">
       {aiModels.map(({ id, imgSrc, selected }) => {
         return (
           <li
