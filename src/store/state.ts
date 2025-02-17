@@ -29,51 +29,16 @@ export const useAiModelsStore = create<AiModel>((set) => ({
     }))
 }));
 
-interface UserAndAiModelInteraction {
-  chatInteraction: {
+interface UserAndAiModelsInteraction {
+  interaction: {
     id: number;
     userInput: string;
-    responses: {
-      [key: string]: string;
-    };
+    ChatGPT: string;
+    Gemini: string;
+    Claude: string;
   }[];
-  addUserInput: (userInput: string) => number;
-  addAiResponse: (id: number, modelName: string, response: string) => void;
 }
 
-// 유저 Input, AI 모델 Input 저장
-export const useUserAndAiModelInteractionStore =
-  create<UserAndAiModelInteraction>((set) => ({
-    chatInteraction: [],
-    addUserInput: (userInput) => {
-      const newId = Date.now();
-
-      set((state) => ({
-        chatInteraction: [
-          ...state.chatInteraction,
-          {
-            id: newId,
-            userInput,
-            responses: {}
-          }
-        ]
-      }));
-
-      return newId;
-    },
-    addAiResponse: (id, modelName, response) => {
-      set((state) => ({
-        chatInteraction: state.chatInteraction.map((chatInteraction) =>
-          chatInteraction.id === id
-            ? {
-                ...chatInteraction,
-                responses: {
-                  ...chatInteraction.responses,
-                  [modelName]: response
-                }
-              }
-            : chatInteraction
-        )
-      }));
-    }
-  }));
+export const useUserAndAiModelsInteractionStore = create((set) => ({
+  interaction: []
+}));
