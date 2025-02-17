@@ -17,6 +17,11 @@ interface UserInput {
   setUserInput: (input: string) => void;
 }
 
+interface CompletedUserInput {
+  completedUserInput: string[];
+  setCompletedUserInput: (userInput: string) => void;
+}
+
 const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => {
   return {
     id: index,
@@ -35,3 +40,13 @@ export const useUserInputStore = create<UserInput>((set) => ({
   userInput: "",
   setUserInput: (input) => set({ userInput: input })
 }));
+
+export const useCompletedUserInputStore = create<CompletedUserInput>(
+  (set) => ({
+    completedUserInput: [],
+    setCompletedUserInput: (userInput) =>
+      set({
+        completedUserInput: [...completedUserInput, userInput]
+      })
+  })
+);
