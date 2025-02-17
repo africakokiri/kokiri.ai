@@ -72,3 +72,51 @@ export const useAiModelAndUserInteractionStore =
         }))
       }))
   }));
+
+interface UserAndAiModelInteraction {
+  chatInteraction: {
+    id: number;
+    userInput: string;
+    responses: {
+      [key: string]: string;
+    };
+  }[];
+  addUserInput: (userInput: string) => number;
+  addAiResponse: (id: number, modelName: string, response: string) => void;
+}
+
+export const useUserAndAiModelInteractionStore =
+  create<UserAndAiModelInteraction>((set) => ({
+    chatInteraction: [],
+    addUserInput: (userInput) => {
+      const newId = Date.now();
+
+      set((state) => ({
+        chatInteraction: [
+          ...state.chatInteraction,
+          {
+            id: newId,
+            userInput,
+            responses: {}
+          }
+        ]
+      }));
+
+      return newId;
+    },
+    addAiResponse: (id, modelName, response) => {
+      set((state) => ({
+        chatInteraction: state.chatInteraction.map((chatInteraction) =>
+          chatInteraction.id === id
+            ? {
+                ...chatInteraction,
+                responses: {
+                  ...chatInteraction.responses,
+                  [modelName]: response
+                }
+              }
+            : chatInteraction
+        )
+      }));
+    }
+  }));
