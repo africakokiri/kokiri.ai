@@ -21,3 +21,29 @@ export const useUserInputStore = create<UserInput>((set) => ({
       ]
     }))
 }));
+
+interface AiModel {
+  aiModels: {
+    id: number;
+    name: string;
+    imgSrc: string;
+    selected: boolean;
+  }[];
+  selectAiModel: (aiModelId: number) => void;
+}
+
+export const useAiModelsStore = create<AiModel>((set) => ({
+  aiModels: ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
+    id: index,
+    name: item,
+    imgSrc: `/ai-models/${item}.svg`,
+    selected: index === 0
+  })),
+  selectAiModel: (aiModelId) =>
+    set((state) => ({
+      aiModels: state.aiModels.map((model) => ({
+        ...model,
+        selected: model.id === aiModelId
+      }))
+    }))
+}));
