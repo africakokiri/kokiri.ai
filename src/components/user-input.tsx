@@ -15,6 +15,11 @@ export const UserInput = () => {
 
     if (textAreaRef.current) {
       const textarea = textAreaRef.current as HTMLTextAreaElement;
+
+      if (textarea.value === "") {
+        return null;
+      }
+
       setUserInput(textarea.value);
 
       textarea.value = "";
