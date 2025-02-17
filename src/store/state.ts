@@ -7,29 +7,6 @@ const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
   selected: index === 0
 }));
 
-interface UserInput {
-  userInput: {
-    id: number;
-    userInput: string;
-  }[];
-  setUserInput: (input: string) => void;
-}
-
-// 사용자 입력
-export const useUserInputStore = create<UserInput>((set) => ({
-  userInput: [],
-  setUserInput: (input) =>
-    set((state) => ({
-      userInput: [
-        ...state.userInput,
-        {
-          id: Date.now(),
-          userInput: input
-        }
-      ]
-    }))
-}));
-
 interface AiModel {
   aiModels: {
     id: number;
@@ -52,27 +29,6 @@ export const useAiModelsStore = create<AiModel>((set) => ({
     }))
 }));
 
-interface AiModelAndUserInteraction {
-  chat: {
-    userInput: string;
-    aiModels: AiModel;
-  }[];
-  setChat: (aiModelInput: string) => void;
-}
-
-// 유저의 input, AI 모델의 input 저장
-export const useAiModelAndUserInteractionStore =
-  create<AiModelAndUserInteraction>((set) => ({
-    chat: [],
-    setChat: (aiModelInput) =>
-      set((state) => ({
-        chat: state.chat.map((chatHistory) => ({
-          ...chatHistory,
-          aiModelInput
-        }))
-      }))
-  }));
-
 interface UserAndAiModelInteraction {
   chatInteraction: {
     id: number;
@@ -85,6 +41,7 @@ interface UserAndAiModelInteraction {
   addAiResponse: (id: number, modelName: string, response: string) => void;
 }
 
+// 유저 Input, AI 모델 Input 저장
 export const useUserAndAiModelInteractionStore =
   create<UserAndAiModelInteraction>((set) => ({
     chatInteraction: [],
