@@ -9,7 +9,10 @@ export const AiModelsHeader = () => {
   const { aiModels, selectAiModel } = useAiModelsStore();
 
   return (
-    <ul className="fixed left-0 top-0 flex gap-2 p-2">
+    <ul
+      className="fixed left-0 top-0 flex w-full gap-2 rounded-lg p-2
+backdrop-blur-md"
+    >
       {aiModels.map(({ id, imgSrc, selected }) => {
         return (
           <li
