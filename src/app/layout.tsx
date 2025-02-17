@@ -5,9 +5,9 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Kokiri",
-  description: "multiple AI",
+  description: "AI comparison",
   icons: {
-    icon: "/icons/elephant.svg"
+    icon: "/icons/kokiri.svg"
   }
 };
 
