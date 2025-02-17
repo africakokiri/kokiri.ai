@@ -1,30 +1,36 @@
 "use client";
 
-import { useUserInputStore } from "@/store/state";
+import {
+  useAiModelAndUserInteractionStore,
+  useUserInputStore
+} from "@/store/state";
 
 import { ChevronUp } from "lucide-react";
-import { type FormEvent, useRef } from "react";
+import { type FormEvent, useEffect, useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 export const UserInput = () => {
-  const { setUserInput } = useUserInputStore();
-  const textAreaRef = useRef(null);
+  const { userInput, setUserInput } = useUserInputStore();
+  const {} = useAiModelAndUserInteractionStore();
+  const textarea = useRef(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
 
-    if (textAreaRef.current) {
-      const textarea = textAreaRef.current as HTMLTextAreaElement;
+    if (textarea.current) {
+      const textareaEl = textarea.current as HTMLTextAreaElement;
 
-      if (textarea.value === "") {
+      if (textareaEl.value === "") {
         return null;
       }
 
-      setUserInput(textarea.value);
+      setUserInput(textareaEl.value);
 
-      textarea.value = "";
+      textareaEl.value = "";
     }
   };
+
+  useEffect(() => {}, [userInput]);
 
   return (
     <form
@@ -34,7 +40,7 @@ border-black/20 shadow-lg backdrop-blur-md"
     >
       <label className="flex w-full items-center justify-between gap-2 p-3">
         <TextareaAutosize
-          ref={textAreaRef}
+          ref={textarea}
           minRows={1}
           maxRows={5}
           placeholder="프롬프트를 입력하세요."

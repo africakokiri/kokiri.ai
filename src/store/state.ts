@@ -1,5 +1,12 @@
 import { create } from "zustand";
 
+const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
+  id: index,
+  name: item,
+  imgSrc: `/ai-models/${item}.svg`,
+  selected: index === 0
+}));
+
 interface UserInput {
   userInput: {
     id: number;
@@ -35,12 +42,7 @@ interface AiModel {
 
 // AI 모델 리스트, 선택된 AI 모델
 export const useAiModelsStore = create<AiModel>((set) => ({
-  aiModels: ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
-    id: index,
-    name: item,
-    imgSrc: `/ai-models/${item}.svg`,
-    selected: index === 0
-  })),
+  aiModels,
   selectAiModel: (aiModelId) =>
     set((state) => ({
       aiModels: state.aiModels.map((model) => ({
@@ -49,3 +51,24 @@ export const useAiModelsStore = create<AiModel>((set) => ({
       }))
     }))
 }));
+
+interface AiModelAndUserInteraction {
+  chat: {
+    userInput: string;
+    aiModels: AiModel;
+  }[];
+  setChat: (aiModelInput: string) => void;
+}
+
+// 유저의 input, AI 모델의 input 저장
+export const useAiModelAndUserInteractionStore =
+  create<AiModelAndUserInteraction>((set) => ({
+    chat: [],
+    setChat: (aiModelInput) =>
+      set((state) => ({
+        chat: state.chat.map((chatHistory) => ({
+          ...chatHistory,
+          aiModelInput
+        }))
+      }))
+  }));
