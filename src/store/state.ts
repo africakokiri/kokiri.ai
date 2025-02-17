@@ -8,6 +8,7 @@ interface UserInput {
   setUserInput: (input: string) => void;
 }
 
+// 사용자 입력
 export const useUserInputStore = create<UserInput>((set) => ({
   userInput: [],
   setUserInput: (input) =>
@@ -32,6 +33,7 @@ interface AiModel {
   selectAiModel: (aiModelId: number) => void;
 }
 
+// AI 모델 리스트, 선택된 AI 모델
 export const useAiModelsStore = create<AiModel>((set) => ({
   aiModels: ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
     id: index,
