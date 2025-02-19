@@ -1,10 +1,14 @@
 "use client";
 
+import { useInteractWithUserAndAiModelsStore } from "@/store/state";
+
 import { ChevronUp } from "lucide-react";
-import { type FormEvent, useRef } from "react";
+import { type FormEvent, useEffect, useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 export const UserInput = () => {
+  const { interaction, interactWithUserAndAiModels } =
+    useInteractWithUserAndAiModelsStore();
   const textarea = useRef(null);
 
   const handleSubmit = (e: FormEvent) => {
@@ -17,9 +21,15 @@ export const UserInput = () => {
         return null;
       }
 
+      interactWithUserAndAiModels(textareaEl.value);
+
       textareaEl.value = "";
     }
   };
+
+  useEffect(() => {
+    console.log(interaction);
+  }, [interaction]);
 
   return (
     <form

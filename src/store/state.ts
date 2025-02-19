@@ -1,3 +1,7 @@
+import { ChatGPT } from "@/server/chat-gpt";
+import { Claude } from "@/server/claude";
+import { Gemini } from "@/server/gemini";
+
 import { create } from "zustand";
 
 const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
@@ -29,16 +33,53 @@ export const useAiModelsStore = create<AiModel>((set) => ({
     }))
 }));
 
-interface UserAndAiModelsInteraction {
-  interaction: {
-    id: number;
-    userInput: string;
-    ChatGPT: string;
-    Gemini: string;
-    Claude: string;
-  }[];
+interface Interaction {
+  id: number;
+  userInput: string;
+  ChatGPT?: string;
+  Gemini?: string;
+  Claude?: string;
+  status: "pending" | "rejected" | "fulfilled";
 }
 
-export const useUserAndAiModelsInteractionStore = create((set) => ({
-  interaction: []
-}));
+interface InteractWithUserAndAiModels {
+  interaction: Interaction[];
+  interactWithUserAndAiModels: (userInput: string) => void;
+}
+
+export const useInteractWithUserAndAiModelsStore =
+  create<InteractWithUserAndAiModels>((set) => ({
+    interaction: [],
+    interactWithUserAndAiModels: (userInput) => {
+      const newInteraction: Interaction = {
+        id: Date.now(),
+        userInput,
+        status: "pending"
+      };
+
+      set((state) => ({
+        interaction: [...state.interaction, newInteraction]
+      }));
+
+      (async () => {
+        const [gpt, gemini, claude] = await Promise.all([
+          ChatGPT(userInput),
+          Gemini(userInput),
+          Claude(userInput)
+        ]);
+
+        set((state) => ({
+          interaction: state.interaction.map((interaction) =>
+            interaction.id === newInteraction.id
+              ? {
+                  ...interaction,
+                  ChatGPT: gpt,
+                  Gemini: gemini,
+                  Claude: claude
+                }
+              : interaction
+          )
+        }));
+      })();
+    }
+  }));
