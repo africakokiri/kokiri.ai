@@ -43,7 +43,7 @@ backdrop-blur-md md:h-full *:md:w-1/3"
                 className={cn(
                   "transition-opacity duration-1000",
                   isDesktop && conversations.length > 0
-                    ? "opacity-15"
+                    ? "opacity-10"
                     : "opacity-100"
                 )}
               />
@@ -53,7 +53,7 @@ backdrop-blur-md md:h-full *:md:w-1/3"
                 className={cn(
                   "transition-opacity duration-1000",
                   isDesktop && conversations.length > 0
-                    ? "opacity-15"
+                    ? "opacity-10"
                     : "opacity-100"
                 )}
               >

@@ -7,6 +7,7 @@ import {
   useSelectAiModelsStore
 } from "@/store/state";
 
+import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 
 const Mobile = () => {
@@ -67,28 +68,37 @@ const Desktop = () => {
   const { conversations } = useConversationStore();
 
   return (
-    <div className="absolute left-0 top-0 flex w-full gap-8 p-8">
-      {conversations.map((conversation) => {
-        return (
-          <div
+    <div
+      className="absolute left-0 top-0 grid w-full grid-cols-3 gap-12 p-8
+pb-[120px]"
+    >
+      <div className="flex flex-col gap-8">
+        {conversations.map((conversation) => (
+          <AiModelLayout
             key={conversation.id}
-            className="flex w-full gap-8 *:w-1/3"
-          >
-            <AiModelLayout
-              conversation={conversation}
-              modelName="ChatGPT"
-            />
-            <AiModelLayout
-              conversation={conversation}
-              modelName="Gemini"
-            />
-            <AiModelLayout
-              conversation={conversation}
-              modelName="Claude"
-            />
-          </div>
-        );
-      })}
+            conversation={conversation}
+            modelName="ChatGPT"
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-8">
+        {conversations.map((conversation) => (
+          <AiModelLayout
+            key={conversation.id}
+            conversation={conversation}
+            modelName="Gemini"
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-8">
+        {conversations.map((conversation) => (
+          <AiModelLayout
+            key={conversation.id}
+            conversation={conversation}
+            modelName="Claude"
+          />
+        ))}
+      </div>
     </div>
   );
 };
