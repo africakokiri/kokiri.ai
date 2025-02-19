@@ -75,7 +75,8 @@ export const useInteractWithUserAndAiModelsStore =
                   ...interaction,
                   ChatGPT: gpt,
                   Gemini: gemini,
-                  Claude: claude
+                  Claude: claude,
+                  status: "fulfilled"
                 }
               : interaction
           )

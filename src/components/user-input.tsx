@@ -3,11 +3,11 @@
 import { useInteractWithUserAndAiModelsStore } from "@/store/state";
 
 import { ChevronUp } from "lucide-react";
-import { type FormEvent, useEffect, useRef } from "react";
+import { type FormEvent, useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 export const UserInput = () => {
-  const { interaction, interactWithUserAndAiModels } =
+  const { interactWithUserAndAiModels } =
     useInteractWithUserAndAiModelsStore();
   const textarea = useRef(null);
 
@@ -26,10 +26,6 @@ export const UserInput = () => {
       textareaEl.value = "";
     }
   };
-
-  useEffect(() => {
-    console.log(interaction);
-  }, [interaction]);
 
   return (
     <form

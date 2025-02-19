@@ -8,7 +8,7 @@ export default function page() {
       <div className="pt-[64px]">
         <AiModelsHeader />
       </div>
-      {/* <AiModelsInteraction /> */}
+      <AiModelsInteraction />
       <div className="pb-[64px]">
         <UserInput />
       </div>
