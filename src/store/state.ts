@@ -6,7 +6,7 @@ import { create } from "zustand";
 
 const aiModelNames = ["ChatGPT", "Gemini", "Claude"] as const;
 
-type AiModelNames = (typeof aiModelNames)[number];
+export type AiModelNames = (typeof aiModelNames)[number];
 
 const aiModels = aiModelNames.map((item, index) => ({
   id: index,
@@ -42,7 +42,7 @@ interface AiResponse {
   status: "loading" | "completed";
 }
 
-interface Conversation {
+export interface Conversation {
   id: number;
   userInput: string;
   responses: Record<AiModelNames, AiResponse>;

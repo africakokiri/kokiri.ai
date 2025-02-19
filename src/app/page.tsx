@@ -1,5 +1,5 @@
+import { AiModelsConversation } from "@/components/ai-models-conversation";
 import { AiModelsHeader } from "@/components/ai-models-header";
-import { AiModelsInteraction } from "@/components/ai-models-interaction";
 import { UserInput } from "@/components/user-input";
 
 export default function page() {
@@ -8,7 +8,7 @@ export default function page() {
       <div className="pb-[64px]">
         <AiModelsHeader />
       </div>
-      <AiModelsInteraction />
+      <AiModelsConversation />
       <div className="pt-[64px]">
         <UserInput />
       </div>
