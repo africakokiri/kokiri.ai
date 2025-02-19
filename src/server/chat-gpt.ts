@@ -6,7 +6,7 @@ const client = new OpenAI({
   apiKey: process.env["OPENAI_API_KEY"]
 });
 
-export const ChatGPT = async (prompt: string) => {
+export const FETCH_CHAT_GPT = async (prompt: string) => {
   const response = await client.chat.completions.create({
     messages: [{ role: "user", content: prompt }],
     model: "gpt-4o-mini"
