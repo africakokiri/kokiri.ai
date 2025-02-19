@@ -30,8 +30,9 @@ export const UserInput = () => {
     <form
       onSubmit={handleSubmit}
       className="fixed bottom-0 flex w-full items-center border-t-[1px]
-border-black/20 shadow-lg backdrop-blur-md md:bottom-4 md:left-1/4 md:w-1/2
-md:rounded-lg md:border-[1px]"
+border-black/20 shadow-lg backdrop-blur-md md:bottom-8 md:left-1/4 md:w-1/2
+md:rounded-lg md:border-[1px] md:transition-shadow md:duration-300
+md:focus-within:shadow-2xl md:hover:shadow-xl"
     >
       <label
         className="flex w-full items-center justify-between gap-2 p-3
