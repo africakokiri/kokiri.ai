@@ -35,14 +35,16 @@ export const useAiModelsStore = create<AiModel>((set) => ({
     }))
 }));
 
+export interface Interaction {
+  id: number;
+  userInput: string;
+  ChatGPT: string;
+  Gemini: string;
+  Claude: string;
+}
+
 interface InteractWithUserAndAiModels {
-  interactions: {
-    id: number;
-    userInput: string;
-    ChatGPT: string;
-    Gemini: string;
-    Claude: string;
-  }[];
+  interactions: Interaction[];
   addInteraction: (userInput: string) => void;
 }
 
