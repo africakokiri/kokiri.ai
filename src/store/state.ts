@@ -37,10 +37,15 @@ export const useSelectAiModelsStore = create<SelectAiModels>((set) => ({
     }))
 }));
 
+interface AiResponse {
+  message: string;
+  status: "pending" | "rejected" | "fulfilled";
+}
+
 interface Conversation {
   id: number;
   userInput: string;
-  responses: Record<AiModelNames, string>;
+  responses: Record<AiModelNames, AiResponse>;
 }
 
 interface Conversations {
@@ -68,8 +73,14 @@ export const useConversationStore = create<Conversations>((set) => ({
           id,
           userInput,
           responses: Object.fromEntries(
-            aiModelNames.map((name) => [name, ""])
-          ) as Record<AiModelNames, string>
+            aiModelNames.map((name) => [
+              name,
+              {
+                message: "",
+                status: "pending"
+              }
+            ])
+          ) as Record<AiModelNames, AiResponse>
         }
       ]
     }));
@@ -83,7 +94,10 @@ export const useConversationStore = create<Conversations>((set) => ({
                   ...conversation,
                   response: {
                     ...conversation.responses,
-                    [aiModel]: res
+                    [aiModel]: {
+                      message: res,
+                      status: "fulfilled"
+                    }
                   }
                 }
               : conversation
