@@ -1,10 +1,13 @@
 "use client";
 
+import { userInteractWithUserAndAiModelsStore } from "@/store/state";
+
 import { ChevronUp } from "lucide-react";
 import { type FormEvent, useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 export const UserInput = () => {
+  const { addInteraction } = userInteractWithUserAndAiModelsStore();
   const textarea = useRef(null);
 
   const handleSubmit = (e: FormEvent) => {
@@ -16,6 +19,8 @@ export const UserInput = () => {
       if (textareaEl.value === "") {
         return null;
       }
+
+      addInteraction(textareaEl.value);
 
       textareaEl.value = "";
     }
@@ -33,7 +38,7 @@ border-black/20 shadow-lg backdrop-blur-md"
           minRows={1}
           maxRows={5}
           placeholder="프롬프트를 입력하세요."
-          className="w-full bg-transparent outline-none"
+          className="w-full resize-none bg-transparent outline-none"
         />
         <button className="max-h-fit rounded-lg bg-black p-1 text-white">
           <ChevronUp />

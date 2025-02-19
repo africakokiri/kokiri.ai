@@ -1,53 +1,41 @@
 "use client";
 
-import { ChatGPT } from "@/server/chat-gpt";
-import { useAiModelsStore, useUserInputStore } from "@/store/state";
-
-import { useEffect, useState } from "react";
+import {
+  useAiModelsStore,
+  userInteractWithUserAndAiModelsStore
+} from "@/store/state";
 
 export const AiModelsInteraction = () => {
-  const { userInput } = useUserInputStore();
   const { aiModels } = useAiModelsStore();
-  const [gptResponse, setGptResponse] = useState<(string | null)[]>([]);
+  const { interactions } = userInteractWithUserAndAiModelsStore();
 
-  useEffect(() => {
-    (async () => {
-      if (userInput.length === 0) {
-        return null;
-      }
-
-      const response = await ChatGPT(
-        userInput[userInput.length - 1].userInput
-      );
-
-      setGptResponse([...gptResponse, response]);
-    })();
-  }, [userInput]);
-
-  return (
-    <div>
+  if (interactions) {
+    return (
       <div className="space-y-4">
-        {userInput.map((input, index) => {
+        {interactions.map((interaction) => {
           return (
             <div
-              key={input.id}
-              // user input <-> response
+              key={interaction.id}
               className="space-y-4"
             >
               <div className="flex w-full justify-end">
                 <p className="mx-4 rounded-lg bg-neutral-200 px-2 py-1">
-                  {input.userInput}
+                  {interaction.userInput}
                 </p>
               </div>
               <div className="flex w-full justify-start">
                 <p className="mx-4 rounded-lg px-2 py-1">
-                  {gptResponse[index]}
+                  {aiModels.map(({ name, selected }) => {
+                    if (selected) {
+                      return interaction[name];
+                    }
+                  })}
                 </p>
               </div>
             </div>
           );
         })}
       </div>
-    </div>
-  );
+    );
+  }
 };

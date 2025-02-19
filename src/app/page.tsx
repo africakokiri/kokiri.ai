@@ -5,11 +5,11 @@ import { UserInput } from "@/components/user-input";
 export default function page() {
   return (
     <div>
-      <div className="pt-[64px]">
+      <div className="pb-[64px]">
         <AiModelsHeader />
       </div>
-      {/* <AiModelsInteraction /> */}
-      <div className="pb-[64px]">
+      <AiModelsInteraction />
+      <div className="pt-[64px]">
         <UserInput />
       </div>
     </div>
