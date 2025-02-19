@@ -4,9 +4,11 @@ import { FETCH_GEMINI } from "@/server/gemini";
 
 import { create } from "zustand";
 
+type AiModels = "ChatGPT" | "Gemini" | "Claude";
+
 const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
   id: index,
-  name: item,
+  name: item as AiModels,
   imgSrc: `/ai-models/${item}.svg`,
   selected: index === 0
 }));
@@ -14,7 +16,7 @@ const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
 interface AiModel {
   aiModels: {
     id: number;
-    name: string;
+    name: AiModels;
     imgSrc: string;
     selected: boolean;
   }[];
