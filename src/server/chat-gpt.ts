@@ -12,5 +12,5 @@ export const FETCH_CHAT_GPT = async (prompt: string) => {
     model: "gpt-4o-mini"
   });
 
-  return response.choices[0].message.content;
+  return response.choices[0].message.content!;
 };
