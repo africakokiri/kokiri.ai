@@ -1,13 +1,13 @@
 "use client";
 
 import { cn } from "@/libs/shadcn/utils";
-import { useAiModelsStore } from "@/store/state";
+import { useSelectAiModelsStore } from "@/store/state";
 
 import Image from "next/image";
 import { useMediaQuery } from "react-responsive";
 
 export const AiModelsHeader = () => {
-  const { aiModels, selectAiModel } = useAiModelsStore();
+  const { aiModels, selectAiModel } = useSelectAiModelsStore();
 
   const isDesktop = useMediaQuery({
     query: "(min-width: 768px)"

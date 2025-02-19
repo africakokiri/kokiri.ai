@@ -1,13 +1,13 @@
 "use client";
 
-import { userInteractWithUserAndAiModelsStore } from "@/store/state";
+import { useConversationStore } from "@/store/state";
 
 import { ChevronUp } from "lucide-react";
 import { type FormEvent, useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 export const UserInput = () => {
-  const { addInteraction } = userInteractWithUserAndAiModelsStore();
+  const { addConversation } = useConversationStore();
   const textarea = useRef(null);
 
   const handleSubmit = (e: FormEvent) => {
@@ -20,7 +20,7 @@ export const UserInput = () => {
         return null;
       }
 
-      addInteraction(textareaEl.value);
+      addConversation(textareaEl.value);
 
       textareaEl.value = "";
     }
@@ -33,7 +33,10 @@ export const UserInput = () => {
 border-black/20 shadow-lg backdrop-blur-md md:bottom-4 md:left-1/4 md:w-1/2
 md:rounded-lg md:border-[1px]"
     >
-      <label className="flex w-full items-center justify-between gap-2 p-3">
+      <label
+        className="flex w-full items-center justify-between gap-2 p-3
+hover:cursor-text"
+      >
         <TextareaAutosize
           ref={textarea}
           minRows={1}

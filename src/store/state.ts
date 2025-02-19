@@ -39,7 +39,7 @@ export const useSelectAiModelsStore = create<SelectAiModels>((set) => ({
 
 interface AiResponse {
   message: string;
-  status: "pending" | "rejected" | "fulfilled";
+  status: "loading" | "completed";
 }
 
 interface Conversation {
@@ -77,7 +77,7 @@ export const useConversationStore = create<Conversations>((set) => ({
               name,
               {
                 message: "",
-                status: "pending"
+                status: "loading"
               }
             ])
           ) as Record<AiModelNames, AiResponse>
@@ -92,11 +92,11 @@ export const useConversationStore = create<Conversations>((set) => ({
             conversation.id === id
               ? {
                   ...conversation,
-                  response: {
+                  responses: {
                     ...conversation.responses,
                     [aiModel]: {
                       message: res,
-                      status: "fulfilled"
+                      status: "completed"
                     }
                   }
                 }
