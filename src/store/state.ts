@@ -4,27 +4,29 @@ import { FETCH_GEMINI } from "@/server/gemini";
 
 import { create } from "zustand";
 
-type AiModels = "ChatGPT" | "Gemini" | "Claude";
+const aiModelNames = ["ChatGPT", "Gemini", "Claude"] as const;
 
-const aiModels = ["ChatGPT", "Gemini", "Claude"].map((item, index) => ({
+type AiModelNames = (typeof aiModelNames)[number];
+
+const aiModels = aiModelNames.map((item, index) => ({
   id: index,
-  name: item as AiModels,
+  name: item,
   imgSrc: `/ai-models/${item}.svg`,
   selected: index === 0
 }));
 
-interface AiModel {
+interface SelectAiModels {
   aiModels: {
     id: number;
-    name: AiModels;
+    name: AiModelNames;
     imgSrc: string;
     selected: boolean;
   }[];
   selectAiModel: (aiModelId: number) => void;
 }
 
-// AI 모델 리스트, 선택된 AI 모델
-export const useAiModelsStore = create<AiModel>((set) => ({
+// 선택된 AI 모델과 AI 모델들의 목록을 저장하는 Store
+export const useSelectAiModelsStore = create<SelectAiModels>((set) => ({
   aiModels,
   selectAiModel: (aiModelId) =>
     set((state) => ({
@@ -35,64 +37,73 @@ export const useAiModelsStore = create<AiModel>((set) => ({
     }))
 }));
 
-interface InteractWithUserAndAiModels {
-  interactions: {
-    id: number;
-    userInput: string;
-    ChatGPT: string;
-    Gemini: string;
-    Claude: string;
-  }[];
-  addInteraction: (userInput: string) => void;
+interface AiResponse {
+  message: string;
+  status: "loading" | "completed";
 }
 
-export const userInteractWithUserAndAiModelsStore =
-  create<InteractWithUserAndAiModels>((set) => ({
-    interactions: [],
-    addInteraction: (userInput) => {
-      const id = Date.now();
+interface Conversation {
+  id: number;
+  userInput: string;
+  responses: Record<AiModelNames, AiResponse>;
+}
 
-      set((state) => ({
-        interactions: [
-          ...state.interactions,
-          {
-            id,
-            userInput,
-            ChatGPT: "",
-            Gemini: "",
-            Claude: ""
-          }
-        ]
-      }));
+interface Conversations {
+  conversations: Conversation[];
+  addConversation: (userInput: string) => void;
+}
 
-      FETCH_CHAT_GPT(userInput).then((res) =>
+const FETCH_AI_MODELS = {
+  ChatGPT: FETCH_CHAT_GPT,
+  Gemini: FETCH_GEMINI,
+  Claude: FETCH_CLAUDE
+};
+
+// 사용자와 유저 간의 대화 기록을 저장하는 Store
+export const useConversationStore = create<Conversations>((set) => ({
+  conversations: [],
+  addConversation: (userInput) => {
+    const id = Date.now();
+
+    // 기존의 대화 기록 유지하고 배열 내의 새로운 객체 추가
+    set((state) => ({
+      conversations: [
+        ...state.conversations,
+        {
+          id,
+          userInput,
+          responses: Object.fromEntries(
+            aiModelNames.map((name) => [
+              name,
+              {
+                message: "",
+                status: "loading"
+              }
+            ])
+          ) as Record<AiModelNames, AiResponse>
+        }
+      ]
+    }));
+
+    aiModelNames.forEach((aiModel) => {
+      FETCH_AI_MODELS[aiModel](userInput).then((res) =>
         set((state) => ({
-          interactions: state.interactions.map((interaction) =>
-            interaction.id === id
-              ? { ...interaction, ChatGPT: res }
-              : interaction
+          conversations: state.conversations.map((conversation) =>
+            conversation.id === id
+              ? {
+                  ...conversation,
+                  responses: {
+                    ...conversation.responses,
+                    [aiModel]: {
+                      message: res,
+                      status: "completed"
+                    }
+                  }
+                }
+              : conversation
           )
         }))
       );
-
-      FETCH_GEMINI(userInput).then((res) =>
-        set((state) => ({
-          interactions: state.interactions.map((interaction) =>
-            interaction.id === id
-              ? { ...interaction, Gemini: res }
-              : interaction
-          )
-        }))
-      );
-
-      FETCH_CLAUDE(userInput).then((res) =>
-        set((state) => ({
-          interactions: state.interactions.map((interaction) =>
-            interaction.id === id
-              ? { ...interaction, Claude: res }
-              : interaction
-          )
-        }))
-      );
-    }
-  }));
+    });
+  }
+}));

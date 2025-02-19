@@ -6,6 +6,7 @@
 
 - [ ] Supabase DB, Auth 
 - [ ] Responsive -> Desktop
+- [ ] 성능 개선
 
 
 
