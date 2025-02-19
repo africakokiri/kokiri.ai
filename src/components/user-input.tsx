@@ -30,13 +30,15 @@ export const UserInput = () => {
     <form
       onSubmit={handleSubmit}
       className="fixed bottom-0 flex w-full items-center border-t-[1px]
-border-black/20 shadow-lg backdrop-blur-md"
+border-black/20 shadow-lg backdrop-blur-md md:bottom-4 md:left-1/4 md:w-1/2
+md:rounded-lg md:border-[1px]"
     >
       <label className="flex w-full items-center justify-between gap-2 p-3">
         <TextareaAutosize
           ref={textarea}
           minRows={1}
           maxRows={5}
+          autoFocus
           placeholder="프롬프트를 입력하세요."
           className="w-full resize-none bg-transparent outline-none"
         />
