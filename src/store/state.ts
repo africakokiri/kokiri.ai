@@ -1,6 +1,6 @@
-import { ChatGPT } from "@/server/chat-gpt";
-import { Claude } from "@/server/claude";
-import { Gemini } from "@/server/gemini";
+import { FETCH_CHAT_GPT } from "@/server/chat-gpt";
+import { FETCH_CLAUDE } from "@/server/claude";
+import { FETCH_GEMINI } from "@/server/gemini";
 
 import { create } from "zustand";
 
@@ -33,54 +33,64 @@ export const useAiModelsStore = create<AiModel>((set) => ({
     }))
 }));
 
-interface Interaction {
-  id: number;
-  userInput: string;
-  ChatGPT?: string;
-  Gemini?: string;
-  Claude?: string;
-  status: "pending" | "rejected" | "fulfilled";
-}
-
 interface InteractWithUserAndAiModels {
-  interaction: Interaction[];
-  interactWithUserAndAiModels: (userInput: string) => void;
+  interactions: {
+    id: number;
+    userInput: string;
+    ChatGPT: string;
+    Gemini: string;
+    Claude: string;
+  }[];
+  addInteraction: (userInput: string) => void;
 }
 
-export const useInteractWithUserAndAiModelsStore =
+export const userInteractWithUserAndAiModelsStore =
   create<InteractWithUserAndAiModels>((set) => ({
-    interaction: [],
-    interactWithUserAndAiModels: (userInput) => {
-      const newInteraction: Interaction = {
-        id: Date.now(),
-        userInput,
-        status: "pending"
-      };
+    interactions: [],
+    addInteraction: (userInput) => {
+      const id = Date.now();
 
       set((state) => ({
-        interaction: [...state.interaction, newInteraction]
+        interactions: [
+          ...state.interactions,
+          {
+            id,
+            userInput,
+            ChatGPT: "",
+            Gemini: "",
+            Claude: ""
+          }
+        ]
       }));
 
-      (async () => {
-        const [gpt, gemini, claude] = await Promise.all([
-          ChatGPT(userInput),
-          Gemini(userInput),
-          Claude(userInput)
-        ]);
-
+      FETCH_CHAT_GPT(userInput).then((res) =>
         set((state) => ({
-          interaction: state.interaction.map((interaction) =>
-            interaction.id === newInteraction.id
-              ? {
-                  ...interaction,
-                  ChatGPT: gpt,
-                  Gemini: gemini,
-                  Claude: claude,
-                  status: "fulfilled"
-                }
+          interactions: state.interactions.map((interaction) =>
+            interaction.id === id
+              ? { ...interaction, ChatGPT: res }
               : interaction
           )
-        }));
-      })();
+        }))
+      );
+
+      FETCH_GEMINI(userInput).then((res) =>
+        set((state) => ({
+          interactions: state.interactions.map((interaction) =>
+            interaction.id === id
+              ? { ...interaction, Gemini: res }
+              : interaction
+          )
+        }))
+      );
+
+      FETCH_CLAUDE(userInput).then((res) =>
+        set((state) => ({
+          interactions: state.interactions.map((interaction) =>
+            interaction.id === id
+              ? { ...interaction, Claude: res }
+              : interaction
+          )
+        }))
+      );
     }
   }));
