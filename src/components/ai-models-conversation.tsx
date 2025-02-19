@@ -7,7 +7,7 @@ import {
   useSelectAiModelsStore
 } from "@/store/state";
 
-import Image from "next/image";
+import ReactMarkdown from "react-markdown";
 import { useMediaQuery } from "react-responsive";
 
 const Mobile = () => {
@@ -57,9 +57,9 @@ const AiModelLayout = ({
       <p className="rounded-lg bg-neutral-200 px-2 py-1">
         {conversation.userInput}
       </p>
-      <p className="w-full text-start">
+      <ReactMarkdown className="w-full text-start">
         {conversation.responses[modelName].message}
-      </p>
+      </ReactMarkdown>
     </div>
   );
 };
