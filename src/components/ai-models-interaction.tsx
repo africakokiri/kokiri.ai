@@ -5,15 +5,9 @@ import {
   userInteractWithUserAndAiModelsStore
 } from "@/store/state";
 
-import { useEffect } from "react";
-
 export const AiModelsInteraction = () => {
   const { aiModels } = useAiModelsStore();
   const { interactions } = userInteractWithUserAndAiModelsStore();
-
-  useEffect(() => {
-    console.log(interactions);
-  }, [interactions]);
 
   if (interactions) {
     return (

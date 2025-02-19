@@ -38,7 +38,7 @@ border-black/20 shadow-lg backdrop-blur-md"
           minRows={1}
           maxRows={5}
           placeholder="프롬프트를 입력하세요."
-          className="w-full bg-transparent outline-none"
+          className="w-full resize-none bg-transparent outline-none"
         />
         <button className="max-h-fit rounded-lg bg-black p-1 text-white">
           <ChevronUp />
